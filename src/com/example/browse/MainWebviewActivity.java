@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +28,7 @@ public class MainWebviewActivity extends Activity {
 
 	private WebView mWebView;
 	private long mLastBackClickTime = 0;
+	private int mScreenWidth;
 
 	@SuppressLint("JavascriptInterface")
 	@Override
@@ -36,6 +39,7 @@ public class MainWebviewActivity extends Activity {
 		mWebView = (WebView) findViewById(R.id.my_webview);
 		WebSettings settings = mWebView.getSettings();
 		settings.setJavaScriptEnabled(true);
+		mScreenWidth = getScreenWidth();
 		String url = "http://www.baidu.com";
 		// client.shouldOverrideUrlLoading(mWebView, url);
 		mWebView.loadUrl(url);
@@ -43,6 +47,12 @@ public class MainWebviewActivity extends Activity {
 		mWebView.setOnTouchListener(mOnTouchListener);
 		mWebView.addJavascriptInterface(new JavascriptInterface(this),
 				"imagelistner");// 添加js交互接口类，并起别名 imagelistner
+	}
+
+	private int getScreenWidth() {
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		return metrics.widthPixels;
 	}
 
 	private OnTouchListener mOnTouchListener = new OnTouchListener() {
@@ -59,10 +69,12 @@ public class MainWebviewActivity extends Activity {
 			case MotionEvent.ACTION_UP:
 				endX = event.getX();
 				if (startX != 0 && endX != 0) {
-					if (mWebView.canGoBack() && ((startX - endX) < -250)) {
+					if (mWebView.canGoBack()
+							&& ((startX - endX) < -mScreenWidth / 3)) {
 						mWebView.goBack();
 					}
-					if (mWebView.canGoForward() && ((startX - endX) > 250)) {
+					if (mWebView.canGoForward()
+							&& ((startX - endX) > mScreenWidth / 3)) {
 						mWebView.goForward();
 					}
 				}
@@ -119,8 +131,7 @@ public class MainWebviewActivity extends Activity {
 			view.getSettings().setJavaScriptEnabled(true);
 			super.onPageFinished(view, url);
 			// html加载完成之后，添加监听图片的点击js函数
-			addimageSlidingListener();
-			System.out.println("--exe");
+			addimageSlidingListener();//not work
 		};
 	};
 
