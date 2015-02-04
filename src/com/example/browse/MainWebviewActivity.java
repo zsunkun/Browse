@@ -5,21 +5,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 /**
- * Android 4.0ÒÔºóWebViewµÄÖØ¶¨Ïò·µ»ØÃ»ÓĞÎÊÌâ key:setting webViewClient
+ * Android 4.0ä»¥åWebViewçš„é‡å®šå‘è¿”å›æ²¡æœ‰é—®é¢˜ key:setting webViewClient
  * 
  * @author sunkun
  *
@@ -46,8 +43,8 @@ public class MainWebviewActivity extends Activity {
 		mWebView.setWebViewClient(client);
 		mWebView.setOnTouchListener(mOnTouchListener);
 		mWebView.addJavascriptInterface(new JavascriptInterface(this),
-				"imagelistner");// Ìí¼Ójs½»»¥½Ó¿ÚÀà£¬²¢Æğ±ğÃû imagelistner
-	}
+				"imagelistner");// æ·»åŠ jsäº¤äº’æ¥å£ç±»ï¼Œå¹¶èµ·åˆ«å imagelistner
+	} 
 
 	private int getScreenWidth() {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -83,7 +80,7 @@ public class MainWebviewActivity extends Activity {
 		}
 	};
 
-	// jsÍ¨ĞÅ½Ó¿Ú
+	// jsé€šä¿¡æ¥å£
 	public class JavascriptInterface {
 
 		private Context context;
@@ -101,10 +98,10 @@ public class MainWebviewActivity extends Activity {
 		}
 	}
 
-	// ×¢Èëjsº¯Êı¼àÌı
+	// æ³¨å…¥jså‡½æ•°ç›‘å¬
 	private void addimageSlidingListener() {
 		mWebView.loadUrl("javascript:(function(){"
-				+ "var objs = $('.swiper-container'); " // ÂÖ²¥Í¼Æ¬µÄdivÈİÆ÷£¬
+				+ "var objs = $('.swiper-container'); " // è½®æ’­å›¾ç‰‡çš„divå®¹å™¨ï¼Œ
 				+ "for(var i=0;i<objs.length;i++)  " + "{"
 				+ "    objs[i].ontouchmove=function()  "
 				+ "    {  "
@@ -112,7 +109,7 @@ public class MainWebviewActivity extends Activity {
 				+ "   return false; }  "
 				+ "}"
 
-				+ "var objs = $('body'); " // µã»÷ÈÎºÎµØ·½ £¬ ÏµÍ³¿ªÊ¼¿ÉÒÔ½ÓÊÜ¹ö¶¯
+				+ "var objs = $('body'); " // ç‚¹å‡»ä»»ä½•åœ°æ–¹ ï¼Œ ç³»ç»Ÿå¼€å§‹å¯ä»¥æ¥å—æ»šåŠ¨
 				+ "for(var i=0;i<objs.length;i++)  " + "{"
 				+ "    objs[i].ontouchstart=function()  " + "    {  "
 				+ "        window.imagelistner.opentouch();  "
@@ -130,7 +127,7 @@ public class MainWebviewActivity extends Activity {
 		public void onPageFinished(WebView view, String url) {
 			view.getSettings().setJavaScriptEnabled(true);
 			super.onPageFinished(view, url);
-			// html¼ÓÔØÍê³ÉÖ®ºó£¬Ìí¼Ó¼àÌıÍ¼Æ¬µÄµã»÷jsº¯Êı
+			// htmlåŠ è½½å®Œæˆä¹‹åï¼Œæ·»åŠ ç›‘å¬å›¾ç‰‡çš„ç‚¹å‡»jså‡½æ•°
 			addimageSlidingListener();//not work
 		};
 	};
@@ -151,6 +148,6 @@ public class MainWebviewActivity extends Activity {
 			return;
 		}
 		mLastBackClickTime = now;
-		Toast.makeText(this, "ÔÙ°´Ò»´ÎÍË³ö", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "å†æŒ‰ä¸€æ¬¡é€€å‡º", Toast.LENGTH_SHORT).show();
 	}
 }
